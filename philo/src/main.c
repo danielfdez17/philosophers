@@ -19,12 +19,28 @@ void	*philosopher_start(void *arg)
 
 	philo = (t_philosopher *)arg;
 	time_to_die = philo->time_to_die;
-	while (philo->status != DEAD || philo->n_eat-- > 0)
-		update_philo_status(philo, &time_to_die);
+	if (philo->n_eat != -1)
+	{
+		while (philo->status != DEAD && philo->n_eat > 0)
+		{
+			if (time_to_die <= 0)
+			philo->status = DEAD;
+			update_philo_status(philo, &time_to_die);
+		}
+	}
+	else
+	{
+		while (philo->status != DEAD && philo->n_eat > 0)
+		{
+			if (time_to_die <= 0)
+			philo->status = DEAD;
+			update_philo_status(philo, &time_to_die);
+		}
+	}
 	return (NULL);
 }
 
-// ! SO: VC -> variable de condicion
+// ! n_philo, ttdie, tteat, ttsleep n_eat_p_philo
 int	main(int ac, char **av)
 {
 	t_philo	*philo;

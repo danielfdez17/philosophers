@@ -88,6 +88,7 @@ t_bool	check_valid_args(int ac, t_philo philo);
 // * FORKS
 
 void	*philosopher_start(void *arg);
+// TODO: function when last arg is not given
 
 
 #endif // PHILO_H

@@ -1,24 +1,33 @@
 #include "../inc/philo.h"
 
-static void	assign_forks(t_philo *philo, t_philosopher *philosopher)
+static void	assign_forks(t_philo *philo, t_philosopher **philosopher)
 {
 	int	i;
 
-	i = philosopher->id - 1;
-	if (i == 0)
-		philosopher->left = philo->forks[philo->n_philosophers - 1].mutex;
+	i = (*philosopher)->id - 1;
+	if (philo->n_philosophers > 1)
+	{
+		if (i == 0)
+			(*philosopher)->left = philo->forks[philo->n_philosophers - 1].mutex;
+		else
+			(*philosopher)->left = philo->forks[i - 1].mutex;
+		(*philosopher)->right = philo->forks[i].mutex;
+	}
 	else
-		philosopher->left = philo->forks[i - 1].mutex;
-	philosopher->right = philo->forks[i].mutex;
-	philosopher->time_to_die = philo->time_to_die;
-	philosopher->time_to_eat = philo->time_to_eat;
-	philosopher->time_to_sleep = philo->time_to_sleep;
-	philosopher->n_eat = philo->n_eat_per_philosopher;
+	{
+		(*philosopher)->left = philo->forks[i].mutex;
+		(*philosopher)->right = NULL;
+	}
+	(*philosopher)->time_to_die = philo->time_to_die;
+	(*philosopher)->time_to_eat = philo->time_to_eat;
+	(*philosopher)->time_to_sleep = philo->time_to_sleep;
+	(*philosopher)->n_eat = philo->n_eat_per_philosopher;
 }
 
 t_bool	init_philosophers(t_philo *philo)
 {
 	t_philosopher	*philosophers;
+	t_philosopher	*aux;
 	int	i;
 
 	philosophers = malloc(sizeof(t_philosopher) * philo->n_philosophers);
@@ -34,7 +43,8 @@ t_bool	init_philosophers(t_philo *philo)
 			return (FALSE);
 		if (pthread_create(philosophers[i].thread, NULL, philosopher_start, &philosophers[i]) != 0)
 			return (FALSE);
-		assign_forks(philo, &philosophers[i]);
+		aux = &philosophers[i];
+		assign_forks(philo, &aux);
 		++i;
 	}
 	philo->philosophers = philosophers;
