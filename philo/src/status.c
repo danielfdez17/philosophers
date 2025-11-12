@@ -1,6 +1,6 @@
 #include "../inc/philo.h"
 
-char	*get_status_msg(t_philo_status status)
+static char	*get_status_msg(t_philo_status status)
 {
 	if (status == FORK_TAKEN)
 		return (FORK_TAKEN_MSG);
@@ -15,5 +15,9 @@ char	*get_status_msg(t_philo_status status)
 
 void	print_status(t_philosopher philosopher)
 {
-	printf("%d %d %s", gettimeofday(, NULL), philosopher.id, get_status_msg(philosopher.status));
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	printf("%ld %d %s\n", tv.tv_sec * 1000, philosopher.id, \
+		get_status_msg(philosopher.status));
 }

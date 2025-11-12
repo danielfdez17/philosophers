@@ -7,12 +7,23 @@
 #include <unistd.h>	  // usleep
 #include <sys/time.h> // gettimeofday
 #include <pthread.h>  // pthread_*
+#include <errno.h>  // pthread_*
 
 #define FORK_TAKEN_MSG "has taken a fork"
 #define IS_EATING_MSG "is eating"
 #define IS_THINKING_MSG "is thinking"
 #define IS_SLEEPING_MSG "is sleeping"
 #define DIED_MSG "died"
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+typedef	short int	t_bool;
 
 typedef enum e_philo_status
 {
@@ -21,37 +32,51 @@ typedef enum e_philo_status
 	THINKING,
 	SLEEPING,
 	DEAD,
-} t_philo_status;
+}	t_philo_status;
 
 typedef enum e_fork_status
 {
 	FREE = 0,
-	TAKEN = 1,
-} t_fork_status;
+	TAKEN,
+}	t_fork_status;
 
 typedef struct s_philosopher
 {
-	int id;
-	t_philo_status status;
-} t_philosopher;
+	int				id;
+	t_philo_status	status;
+	pthread_t		*thread;
+}	t_philosopher;
 
 typedef struct s_fork
 {
-	int id;
-	t_fork_status status;
-} t_fork;
+	int 			id;
+	t_fork_status	status;
+	pthread_t		*thread;
+}	t_fork;
 
 typedef struct s_philo
 {
-	int n_philosophers;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_spleep;
-	int n_eat_per_philosopher;
-	t_philosopher *philosophers;
-	t_fork *fork;
-} t_philo;
+	long			n_philosophers;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_spleep;
+	long			n_eat_per_philosopher;
+	t_philosopher	*philosophers;
+	t_fork 			*forks;
+}	t_philo;
 
-void print_status(t_philosopher philosopher);
+// * STATUS
+void	print_status(t_philosopher philosopher);
+
+// * INITIALIZATION
+t_bool	init_philosophers(t_philo *philo);
+t_bool	init_forks(t_philo *philo);
+t_philo	*init_philo(int ac, char **av);
+
+// * UTILS
+long	ft_atol(char *s);
+void	*free_philo(t_philo *philo);
+t_bool	check_valid_args(int ac, t_philo philo);
+
 
 #endif // PHILO_H

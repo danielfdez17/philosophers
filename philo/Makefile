@@ -23,7 +23,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
 # * Includes
-INCLUDES = -I ./inc/headers -I ./inc/libft/inc/headers/
+INCLUDES = -I ./inc/
 
 # * Objects dir
 OBJ_DIR = ./src/obj/
@@ -58,30 +58,28 @@ obj:
 # ? Removes the object files
 clean:
 	@$(RM) $(OBJS)
-	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "Removing .o files"
 
 # ? Removes both object and executable files
 fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "Removing $(NAME)"
 
 # ? Rebuilds the program/library
 re: fclean all
-	@echo "Rebuilding $(LIBFT)"
-	@$(MAKE) -C $(LIBFT_DIR) re
 	@echo "Rebuilding $(NAME)"
 
 # ! Automating / Debugging rules
 
+INPUT = 2 2 2 2 2
+
 run: all
 	clear
-	./$(NAME)
+	./$(NAME) $(INPUT)
 
 valgrind: all
 	clear
-	valgrind ./$(NAME)
+	valgrind ./$(NAME) $(INPUT)
 
 debug: all
 	clear
