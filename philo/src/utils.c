@@ -30,6 +30,7 @@ void	*free_philo(t_philo **philo)
 	{
 		while (i < (*philo)->n_philosophers)
 		{
+			pthread_mutex_destroy((*philo)->forks[i].mutex);
 			free((*philo)->forks[i].mutex);
 			(*philo)->forks[i++].mutex = NULL;
 		}
@@ -62,7 +63,7 @@ t_bool	check_valid_args(int ac, t_philo philo)
 		return (FALSE);
 	if (philo.time_to_eat <= 0)
 		return (FALSE);
-	if (philo.time_to_spleep <= 0)
+	if (philo.time_to_sleep <= 0)
 		return (FALSE);
 	if (ac == 6 && philo.n_eat_per_philosopher <= 0)
 		return (FALSE);

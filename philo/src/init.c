@@ -10,6 +10,10 @@ static void	assign_forks(t_philo *philo, t_philosopher *philosopher)
 	else
 		philosopher->left = philo->forks[i - 1].mutex;
 	philosopher->right = philo->forks[i].mutex;
+	philosopher->time_to_die = philo->time_to_die;
+	philosopher->time_to_eat = philo->time_to_eat;
+	philosopher->time_to_sleep = philo->time_to_sleep;
+	philosopher->n_eat = philo->n_eat_per_philosopher;
 }
 
 t_bool	init_philosophers(t_philo *philo)
@@ -71,7 +75,7 @@ t_philo	*init_philo(int ac, char **av)
 	philo->n_philosophers = ft_atol(av[1]);
 	philo->time_to_die = ft_atol(av[2]);
 	philo->time_to_eat = ft_atol(av[3]);
-	philo->time_to_spleep = ft_atol(av[4]);
+	philo->time_to_sleep = ft_atol(av[4]);
 	philo->n_eat_per_philosopher = -1;
 	if (ac == 6)
 		philo->n_eat_per_philosopher = ft_atol(av[5]);

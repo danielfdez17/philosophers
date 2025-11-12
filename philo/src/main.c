@@ -14,13 +14,13 @@ void	join_threads(t_philo *philo)
 
 void	*philosopher_start(void *arg)
 {
-	t_philosopher	*philosopher_t;
+	t_philosopher	*philo;
+	long		time_to_die;
 
-	philosopher_t = (t_philosopher *)arg;
-	// * lock left and right forks mutexes
-	update_philo_status(philosopher_t);
-	print_status(*philosopher_t);
-	// ! unlock left and right forks mutexes
+	philo = (t_philosopher *)arg;
+	time_to_die = philo->time_to_die;
+	while (philo->status != DEAD || philo->n_eat-- > 0)
+		update_philo_status(philo, &time_to_die);
 	return (NULL);
 }
 
@@ -40,8 +40,6 @@ int	main(int ac, char **av)
 		printf("An error occurred when initializing t_philo\n");
 		return (0);
 	}
-	printf("everything is correct\n");
-	// create_threads(philo);
 	join_threads(philo);
 	free_philo(&philo);
 	return (0);

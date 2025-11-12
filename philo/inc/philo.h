@@ -47,6 +47,10 @@ typedef struct s_philosopher
 	pthread_t		*thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			n_eat;
 }	t_philosopher;
 
 typedef struct s_fork
@@ -61,7 +65,7 @@ typedef struct s_philo
 	long			n_philosophers;
 	long			time_to_die;
 	long			time_to_eat;
-	long			time_to_spleep;
+	long			time_to_sleep;
 	long			n_eat_per_philosopher;
 	t_philosopher	*philosophers;
 	t_fork 			*forks;
@@ -69,7 +73,7 @@ typedef struct s_philo
 
 // * STATUS
 void	print_status(t_philosopher philosopher);
-void	update_philo_status(t_philosopher *philosopher);
+void	update_philo_status(t_philosopher *philosopher, long *time_to_die);
 
 // * INITIALIZATION
 t_bool	init_philosophers(t_philo *philo);
@@ -82,7 +86,6 @@ void	*free_philo(t_philo **philo);
 t_bool	check_valid_args(int ac, t_philo philo);
 
 // * FORKS
-void	eat(int i);
 
 void	*philosopher_start(void *arg);
 
