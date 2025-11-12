@@ -1,5 +1,29 @@
 #include "../inc/philo.h"
 
+void	join_threads(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->n_philosophers)
+	{
+		pthread_join(*philo->philosophers[i].thread, NULL);
+		++i;
+	}
+}
+
+void	*philosopher_start(void *arg)
+{
+	t_philosopher	*philosopher_t;
+
+	philosopher_t = (t_philosopher *)arg;
+	// * lock left and right forks mutexes
+	update_philo_status(philosopher_t);
+	print_status(*philosopher_t);
+	// ! unlock left and right forks mutexes
+	return (NULL);
+}
+
 // ! SO: VC -> variable de condicion
 int	main(int ac, char **av)
 {
@@ -18,6 +42,7 @@ int	main(int ac, char **av)
 	}
 	printf("everything is correct\n");
 	// create_threads(philo);
-	free_philo(philo);
+	join_threads(philo);
+	free_philo(&philo);
 	return (0);
 }

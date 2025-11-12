@@ -17,7 +17,7 @@ NAME = philo
 # * Compilation
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-# CFLAGS += -fsanitize=address
+CFLAGS += -fsanitize=address
 
 # * Removal
 RM = rm -f

@@ -21,3 +21,17 @@ void	print_status(t_philosopher philosopher)
 	printf("%ld %d %s\n", tv.tv_sec * 1000, philosopher.id, \
 		get_status_msg(philosopher.status));
 }
+
+void	update_philo_status(t_philosopher *philosopher)
+{
+	if (philosopher->status == FORK_TAKEN)
+		philosopher->status = EATING;
+	else if (philosopher->status == EATING)
+		philosopher->status = SLEEPING;
+	else if (philosopher->status == SLEEPING)
+		philosopher->status = THINKING;
+	else if (philosopher->status == THINKING)
+	{
+		philosopher->status = FORK_TAKEN;
+	}
+}
