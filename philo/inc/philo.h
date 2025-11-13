@@ -23,6 +23,10 @@
 #define FALSE 0
 #endif
 
+#ifndef MILISECS
+#define MILISECS 1000
+#endif
+
 typedef	short int	t_bool;
 
 typedef enum e_philo_status

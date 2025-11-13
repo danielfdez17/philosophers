@@ -71,7 +71,7 @@ re: fclean all
 
 # ! Automating / Debugging rules
 
-INPUT = 2 2 2 2 2
+INPUT = 2 2000 1000 1000 2
 
 run: all
 	clear

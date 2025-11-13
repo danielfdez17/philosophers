@@ -19,23 +19,13 @@ void	*philosopher_start(void *arg)
 
 	philo = (t_philosopher *)arg;
 	time_to_die = philo->time_to_die;
-	if (philo->n_eat != -1)
+	if (philo->id % 2 == 0)
+		usleep(philo->time_to_die * MILISECS);
+	while (philo->status != DEAD && philo->n_eat > 0)
 	{
-		while (philo->status != DEAD && philo->n_eat > 0)
-		{
-			if (time_to_die <= 0)
-			philo->status = DEAD;
-			update_philo_status(philo, &time_to_die);
-		}
-	}
-	else
-	{
-		while (philo->status != DEAD && philo->n_eat > 0)
-		{
-			if (time_to_die <= 0)
-			philo->status = DEAD;
-			update_philo_status(philo, &time_to_die);
-		}
+		if (time_to_die <= 0)
+		philo->status = DEAD;
+		update_philo_status(philo, &time_to_die);
 	}
 	return (NULL);
 }

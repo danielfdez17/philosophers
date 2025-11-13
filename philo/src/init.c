@@ -83,6 +83,7 @@ t_philo	*init_philo(int ac, char **av)
 	if (!philo)
 		return (NULL);
 	philo->n_philosophers = ft_atol(av[1]);
+	// TODO: convert to miliseconds
 	philo->time_to_die = ft_atol(av[2]);
 	philo->time_to_eat = ft_atol(av[3]);
 	philo->time_to_sleep = ft_atol(av[4]);
