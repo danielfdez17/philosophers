@@ -4,6 +4,8 @@ void	join_threads(t_philo *philo)
 {
 	int	i;
 
+	if (!philo)
+		return ;
 	i = 0;
 	while (i < philo->n_philosophers)
 	{
@@ -12,20 +14,38 @@ void	join_threads(t_philo *philo)
 	}
 }
 
-void	*philosopher_start(void *arg)
+void	*philosopher_eat_times(void *arg)
 {
 	t_philosopher	*philo;
-	long		time_to_die;
 
 	philo = (t_philosopher *)arg;
-	time_to_die = philo->time_to_die;
 	if (philo->id % 2 == 0)
 		usleep(philo->time_to_die * MILISECS);
 	while (philo->status != DEAD && philo->n_eat > 0)
 	{
-		if (time_to_die <= 0)
-		philo->status = DEAD;
-		update_philo_status(philo, &time_to_die);
+		if (philo->curr_time_to_die <= 0)
+		{
+			philo->status = DEAD;
+			update_philo_status(philo);
+		}
+	}
+	return (NULL);
+}
+
+void	*philosopher_no_eat_times(void *arg)
+{
+	t_philosopher	*philo;
+
+	philo = (t_philosopher *)arg;
+	if (philo->id % 2 == 0)
+		usleep(philo->time_to_die * MILISECS);
+	while (philo->status != DEAD)
+	{
+		if (philo->curr_time_to_die <= 0)
+		{
+			philo->status = DEAD;
+			update_philo_status(philo);
+		}
 	}
 	return (NULL);
 }

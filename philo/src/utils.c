@@ -42,7 +42,8 @@ void	*free_philo(t_philo **philo)
 	{
 		while (i < (*philo)->n_philosophers)
 		{
-			free((*philo)->philosophers[i++].thread);
+			free((*philo)->philosophers[i].thread);
+			++i;
 		}
 		free((*philo)->philosophers);
 		(*philo)->philosophers = NULL;

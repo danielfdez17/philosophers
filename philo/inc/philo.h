@@ -51,6 +51,7 @@ typedef struct s_philosopher
 	pthread_t		*thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
+	long			curr_time_to_die;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -77,7 +78,7 @@ typedef struct s_philo
 
 // * STATUS
 void	print_status(t_philosopher philosopher);
-void	update_philo_status(t_philosopher *philosopher, long *time_to_die);
+void	update_philo_status(t_philosopher *philosopher);
 
 // * INITIALIZATION
 t_bool	init_philosophers(t_philo *philo);
@@ -91,7 +92,8 @@ t_bool	check_valid_args(int ac, t_philo philo);
 
 // * FORKS
 
-void	*philosopher_start(void *arg);
+void	*philosopher_eat_times(void *arg);
+void	*philosopher_no_eat_times(void *arg);
 // TODO: function when last arg is not given
 
 

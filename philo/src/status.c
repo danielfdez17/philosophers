@@ -24,9 +24,9 @@ void	print_status(t_philosopher philosopher)
 	// 	get_status_msg(philosopher.status));
 }
 
-void	update_philo_status(t_philosopher *philosopher, long *time_to_die)
+void	update_philo_status(t_philosopher *philosopher)
 {
-	if (*time_to_die <= 0)
+	if (philosopher->curr_time_to_die <= 0)
 	{
 		philosopher->status = DEAD;
 		print_status(*philosopher);
@@ -62,7 +62,7 @@ void	update_philo_status(t_philosopher *philosopher, long *time_to_die)
 		philosopher->n_eat--;
 		print_status(*philosopher);
 
-		*time_to_die = philosopher->time_to_die;
+		philosopher->curr_time_to_die = philosopher->time_to_die;
 		if (philosopher->right)
 		{
 			pthread_mutex_unlock(philosopher->right);
@@ -74,7 +74,7 @@ void	update_philo_status(t_philosopher *philosopher, long *time_to_die)
 	else if (philosopher->status == EATING)
 	{
 		philosopher->status = SLEEPING;
-		*time_to_die -= philosopher->time_to_sleep;
+		philosopher->curr_time_to_die -= philosopher->time_to_sleep;
 		print_status(*philosopher);
 
 		usleep(philosopher->time_to_sleep * MILISECS);
