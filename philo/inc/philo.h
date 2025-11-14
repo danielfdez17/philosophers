@@ -51,6 +51,7 @@ typedef struct s_philosopher
 	pthread_t		*thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
+	long			curr_ttdie;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -77,7 +78,8 @@ typedef struct s_philo
 
 // * STATUS
 void	print_status(t_philosopher philosopher);
-void	update_philo_status(t_philosopher *philosopher, long *time_to_die);
+void	update_philo_status(t_philosopher **philosopher);
+// void	update_philo_status(t_philosopher *philosopher, long *time_to_die);
 
 // * INITIALIZATION
 t_bool	init_philosophers(t_philo *philo);

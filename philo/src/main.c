@@ -15,17 +15,14 @@ void	join_threads(t_philo *philo)
 void	*philosopher_start(void *arg)
 {
 	t_philosopher	*philo;
-	long		time_to_die;
 
 	philo = (t_philosopher *)arg;
-	time_to_die = philo->time_to_die;
-	if (philo->id % 2 == 0)
-		usleep(philo->time_to_die * MILISECS);
+
 	while (philo->status != DEAD && philo->n_eat > 0)
 	{
-		if (time_to_die <= 0)
+		if (philo->curr_ttdie <= 0)
 		philo->status = DEAD;
-		update_philo_status(philo, &time_to_die);
+		update_philo_status(&philo);
 	}
 	return (NULL);
 }

@@ -19,6 +19,7 @@ static void	assign_forks(t_philo *philo, t_philosopher **philosopher)
 		(*philosopher)->right = NULL;
 	}
 	(*philosopher)->time_to_die = philo->time_to_die;
+	(*philosopher)->curr_ttdie = philo->time_to_die;
 	(*philosopher)->time_to_eat = philo->time_to_eat;
 	(*philosopher)->time_to_sleep = philo->time_to_sleep;
 	(*philosopher)->n_eat = philo->n_eat_per_philosopher;
@@ -38,6 +39,8 @@ t_bool	init_philosophers(t_philo *philo)
 	{
 		philosophers[i].id = i + 1;
 		philosophers[i].status = SLEEPING;
+		if ((i + 1) % 2 != 0)
+			philosophers[i].status = THINKING;
 		philosophers[i].thread = malloc(sizeof(pthread_t));
 		if (!philosophers[i].thread)
 			return (FALSE);
@@ -46,6 +49,10 @@ t_bool	init_philosophers(t_philo *philo)
 		aux = &philosophers[i];
 		assign_forks(philo, &aux);
 		++i;
+	}
+	for (i = 0; i < philo->n_philosophers; ++i)
+	{
+		printf("id: %d, ttdie: %ld, tteat: %ld, ttsleep: %ld\n", philosophers[i].id, philosophers[i].time_to_die, philosophers[i].time_to_eat, philosophers[i].time_to_sleep);
 	}
 	philo->philosophers = philosophers;
 	return (TRUE);
