@@ -89,7 +89,13 @@ long	ft_atol(char *s);
 void	*free_philo(t_philo **philo);
 t_bool	check_valid_args(int ac, t_philo philo);
 
-// * FORKS
+// * ENTRY FUNCTION FOR THREADS
 void	*philosopher_eat_times(void *arg);
+
+// * ACTIONS
+void	philo_eat(t_philosopher *philosopher);
+void	philo_sleep(t_philosopher *philosopher);
+void	philo_dead(t_philosopher *philosopher);
+void	philo_think(t_philosopher *philosopher);
 
 #endif // PHILO_H
