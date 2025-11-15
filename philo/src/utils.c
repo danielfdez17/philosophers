@@ -30,9 +30,7 @@ void	*free_philo(t_philo **philo)
 	{
 		while (i < (*philo)->n_philosophers)
 		{
-			pthread_mutex_destroy((*philo)->forks[i].mutex);
-			free((*philo)->forks[i].mutex);
-			(*philo)->forks[i++].mutex = NULL;
+			pthread_mutex_destroy(&(*philo)->forks[i++].mutex);
 		}
 		free((*philo)->forks);
 		(*philo)->forks = NULL;
@@ -40,11 +38,11 @@ void	*free_philo(t_philo **philo)
 	i = 0;
 	if (*philo && (*philo)->philosophers)
 	{
-		while (i < (*philo)->n_philosophers)
-		{
-			free((*philo)->philosophers[i].thread);
-			++i;
-		}
+		// while (i < (*philo)->n_philosophers)
+		// {
+		// 	free((*philo)->philosophers[i].thread);
+		// 	++i;
+		// }
 		free((*philo)->philosophers);
 		(*philo)->philosophers = NULL;
 	}

@@ -9,7 +9,7 @@ void	join_threads(t_philo *philo)
 	i = 0;
 	while (i < philo->n_philosophers)
 	{
-		pthread_join(*philo->philosophers[i].thread, NULL);
+		pthread_join(philo->philosophers[i].thread, NULL);
 		++i;
 	}
 }
@@ -21,34 +21,48 @@ void	*philosopher_eat_times(void *arg)
 	philo = (t_philosopher *)arg;
 	if (philo->id % 2 == 0)
 		usleep(philo->time_to_die * MILISECS);
+	if (philo->n_eat <= 0)
+	{
+		while (philo->status != DEAD)
+		{
+			if (philo->curr_ttdie <= 0)
+			{
+				philo->status = DEAD;
+				print_status(*philo);
+			}
+			update_philo_status(philo);
+		}
+		return (NULL);
+	}
 	while (philo->status != DEAD && philo->n_eat > 0)
 	{
-		if (philo->curr_time_to_die <= 0)
+		if (philo->curr_ttdie <= 0)
 		{
 			philo->status = DEAD;
-			update_philo_status(philo);
+			print_status(*philo);
 		}
+		update_philo_status(philo);
 	}
 	return (NULL);
 }
 
-void	*philosopher_no_eat_times(void *arg)
-{
-	t_philosopher	*philo;
+// void	*philosopher_no_eat_times(void *arg)
+// {
+// 	t_philosopher	*philo;
 
-	philo = (t_philosopher *)arg;
-	if (philo->id % 2 == 0)
-		usleep(philo->time_to_die * MILISECS);
-	while (philo->status != DEAD)
-	{
-		if (philo->curr_time_to_die <= 0)
-		{
-			philo->status = DEAD;
-			update_philo_status(philo);
-		}
-	}
-	return (NULL);
-}
+// 	philo = (t_philosopher *)arg;
+// 	if (philo->id % 2 == 0)
+// 		usleep(philo->time_to_die * MILISECS);
+// 	while (philo->status != DEAD)
+// 	{
+// 		if (philo->curr_ttdie <= 0)
+// 		{
+// 			philo->status = DEAD;
+// 			update_philo_status(philo);
+// 		}
+// 	}
+// 	return (NULL);
+// }
 
 // ! n_philo, ttdie, tteat, ttsleep n_eat_p_philo
 int	main(int ac, char **av)

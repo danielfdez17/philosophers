@@ -8,17 +8,17 @@ static void	assign_forks(t_philo *philo, t_philosopher **philosopher)
 	if (philo->n_philosophers > 1)
 	{
 		if (i == 0)
-			(*philosopher)->left = philo->forks[philo->n_philosophers - 1].mutex;
+			(*philosopher)->left = &philo->forks[philo->n_philosophers - 1].mutex;
 		else
-			(*philosopher)->left = philo->forks[i - 1].mutex;
-		(*philosopher)->right = philo->forks[i].mutex;
+			(*philosopher)->left = &philo->forks[i - 1].mutex;
+		(*philosopher)->right = &philo->forks[i].mutex;
 	}
 	else
 	{
-		(*philosopher)->left = philo->forks[i].mutex;
+		(*philosopher)->left = &philo->forks[i].mutex;
 		(*philosopher)->right = NULL;
 	}
-	(*philosopher)->curr_time_to_die = philo->time_to_die;
+	(*philosopher)->curr_ttdie = philo->time_to_die;
 	(*philosopher)->time_to_die = philo->time_to_die;
 	(*philosopher)->time_to_eat = philo->time_to_eat;
 	(*philosopher)->time_to_sleep = philo->time_to_sleep;
@@ -39,19 +39,8 @@ t_bool	init_philosophers(t_philo *philo)
 	{
 		philosophers[i].id = i + 1;
 		philosophers[i].status = SLEEPING;
-		philosophers[i].thread = malloc(sizeof(pthread_t));
-		if (!philosophers[i].thread)
+		if (pthread_create(&philosophers[i].thread, NULL, philosopher_eat_times, &philosophers[i]) != 0)
 			return (FALSE);
-		if (philo->n_eat_per_philosopher < 0)
-		{
-			if (pthread_create(philosophers[i].thread, NULL, philosopher_no_eat_times, &philosophers[i]) != 0)
-				return (FALSE);
-		}
-		else
-		{
-			if (pthread_create(philosophers[i].thread, NULL, philosopher_eat_times, &philosophers[i]) != 0)
-				return (FALSE);
-		}
 		aux = &philosophers[i];
 		assign_forks(philo, &aux);
 		++i;
@@ -73,10 +62,7 @@ t_bool	init_forks(t_philo *philo)
 	{
 		forks[i].id = i + 1;
 		forks[i].status = FREE;
-		forks[i].mutex = malloc(sizeof(pthread_mutex_t));
-		if (!forks[i].mutex)
-			return (FALSE);
-		if (pthread_mutex_init(forks[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&forks[i].mutex, NULL) != 0)
 			return (FALSE);
 		++i;
 	}

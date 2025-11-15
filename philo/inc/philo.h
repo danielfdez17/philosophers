@@ -48,10 +48,10 @@ typedef struct s_philosopher
 {
 	int				id;
 	t_philo_status	status;
-	pthread_t		*thread;
+	pthread_t		thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
-	long			curr_time_to_die;
+	long			curr_ttdie;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -62,7 +62,7 @@ typedef struct s_fork
 {
 	int 			id;
 	t_fork_status	status;
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	mutex;
 }	t_fork;
 
 typedef struct s_philo
