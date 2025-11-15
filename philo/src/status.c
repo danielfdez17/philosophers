@@ -20,8 +20,69 @@ void	print_status(t_philosopher philosopher)
 
 	gettimeofday(&tv, NULL);
 	printf("%ld %d %s %ld\n", tv.tv_sec * 1000, philosopher.id, get_status_msg(philosopher.status), philosopher.n_eat);
-	// printf("%ld %d %s\n", tv.tv_usec, philosopher.id, \
+	// printf("%ld %d %s\n", tv.tv_usec, philosopher.id,
 	// 	get_status_msg(philosopher.status));
+}
+
+void	philo_sleep(t_philosopher **philo)
+{
+	(*philo)->status = SLEEPING;
+	(*philo)->curr_ttdie -= (*philo)->time_to_sleep;
+	usleep((*philo)->time_to_sleep);
+	if ((*philo)->curr_ttdie <= 0)
+		(*philo)->status = DEAD;
+	print_status(**philo);
+}
+
+void	philo_eat(t_philosopher **philo)
+{
+	if ((*philo)->id % 2 == 0 && (*philo)->right)
+	{
+		if (pthread_mutex_lock((*philo)->right) == 0)
+		{
+			print_status(**philo);
+			if (pthread_mutex_lock((*philo)->left) != 0)
+				pthread_mutex_unlock((*philo)->right);
+			else
+				print_status(**philo);
+		}
+	}
+	else
+	{
+		if (pthread_mutex_lock((*philo)->left) == 0)
+		{
+			print_status(**philo);
+			if ((*philo)->right && pthread_mutex_lock((*philo)->right) != 0)
+				pthread_mutex_unlock((*philo)->left);
+			else
+				print_status(**philo);
+		}
+
+	}
+	(*philo)->status = EATING;
+	usleep((*philo)->time_to_eat);
+	(*philo)->curr_ttdie -= (*philo)->time_to_eat;
+	printf("%d -> ttdie: %ld", (*philo)->id, (*philo)->curr_ttdie);
+	if ((*philo)->curr_ttdie <= 0)
+	{
+		if ((*philo)->right)
+		{
+			pthread_mutex_unlock((*philo)->right);
+			// printf("%d has freed a fork\n", (*philo)->id);
+		}
+		pthread_mutex_unlock((*philo)->left);
+		(*philo)->status = DEAD;
+	}
+	(*philo)->n_eat--;
+	print_status(**philo);
+	(*philo)->curr_ttdie = (*philo)->time_to_die;
+	if ((*philo)->right)
+	{
+		pthread_mutex_unlock((*philo)->right);
+		// printf("%d has freed a fork\n", (*philo)->id);
+	}
+	pthread_mutex_unlock((*philo)->left);
+	// printf("%d has freed a fork\n", (*philo)->id);
 }
 
 void	update_philo_status(t_philosopher **philosopher)
@@ -30,79 +91,17 @@ void	update_philo_status(t_philosopher **philosopher)
 	{
 		(*philosopher)->status = DEAD;
 		print_status(**philosopher);
-
 	}
 	else if ((*philosopher)->status == FORK_TAKEN)
-	{
-		if ((*philosopher)->id % 2 == 0 && (*philosopher)->right)
-		{
-			if (pthread_mutex_lock((*philosopher)->right) == 0)
-			{
-				print_status(**philosopher);
-				if (pthread_mutex_lock((*philosopher)->left) != 0)
-					pthread_mutex_unlock((*philosopher)->right);
-				else
-					print_status(**philosopher);
-			}
-		}
-		else
-		{
-			if (pthread_mutex_lock((*philosopher)->left) == 0)
-			{
-				print_status(**philosopher);
-				if ((*philosopher)->right && pthread_mutex_lock((*philosopher)->right) != 0)
-					pthread_mutex_unlock((*philosopher)->left);
-				else
-					print_status(**philosopher);
-			}
-
-		}
-		(*philosopher)->status = EATING;
-		usleep((*philosopher)->time_to_eat);
-		(*philosopher)->curr_ttdie -= (*philosopher)->time_to_eat;
-		printf("%d -> ttdie: %ld", (*philosopher)->id, (*philosopher)->curr_ttdie);
-		if ((*philosopher)->curr_ttdie <= 0)
-		{
-			if ((*philosopher)->right)
-			{
-				pthread_mutex_unlock((*philosopher)->right);
-				// printf("%d has freed a fork\n", (*philosopher)->id);
-			}
-			pthread_mutex_unlock((*philosopher)->left);
-			(*philosopher)->status = DEAD;
-		}
-		(*philosopher)->n_eat--;
-		print_status(**philosopher);
-		(*philosopher)->curr_ttdie = (*philosopher)->time_to_die;
-		if ((*philosopher)->right)
-		{
-			pthread_mutex_unlock((*philosopher)->right);
-			// printf("%d has freed a fork\n", (*philosopher)->id);
-		}
-		pthread_mutex_unlock((*philosopher)->left);
-		// printf("%d has freed a fork\n", (*philosopher)->id);
-	}
+		philo_eat(philosopher);
 	else if ((*philosopher)->status == EATING)
-	{
-		(*philosopher)->status = SLEEPING;
-		(*philosopher)->curr_ttdie -= (*philosopher)->time_to_sleep;
-		usleep((*philosopher)->time_to_sleep);
-		if ((*philosopher)->curr_ttdie <= 0)
-			(*philosopher)->status = DEAD;
-		print_status(**philosopher);
-
-	}
+		philo_sleep(philosopher);
 	else if ((*philosopher)->status == SLEEPING)
 	{
 		(*philosopher)->status = THINKING;
 		print_status(**philosopher);
 	}
 	else if ((*philosopher)->status == THINKING)
-	{
 		(*philosopher)->status = FORK_TAKEN;
-		// update_philo_status(philosopher, time_to_die);
-	}
-	// print_status(**philosopher);
-	// printf(" time_to_die: %ld, n_eat: %ld\n", philosopher->curr_ttdie, philosopher->n_eat);
 	// sleep(1);
 }
