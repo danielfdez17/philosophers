@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static void	assign_forks(t_philo *philo, t_philosopher **philosopher)
@@ -8,16 +20,17 @@ static void	assign_forks(t_philo *philo, t_philosopher **philosopher)
 	if (philo->n_philosophers > 1)
 	{
 		if (i == 0)
-			(*philosopher)->left = philo->forks[philo->n_philosophers - 1].mutex;
+			(*philosopher)->left = &philo->forks[philo->n_philosophers - 1];
 		else
-			(*philosopher)->left = philo->forks[i - 1].mutex;
-		(*philosopher)->right = philo->forks[i].mutex;
+			(*philosopher)->left = &philo->forks[i - 1];
+		(*philosopher)->right = &philo->forks[i];
 	}
 	else
 	{
-		(*philosopher)->left = philo->forks[i].mutex;
+		(*philosopher)->left = &philo->forks[i];
 		(*philosopher)->right = NULL;
 	}
+	(*philosopher)->curr_ttdie = philo->time_to_die;
 	(*philosopher)->time_to_die = philo->time_to_die;
 	(*philosopher)->curr_ttdie = philo->time_to_die;
 	(*philosopher)->time_to_eat = philo->time_to_eat;
@@ -29,7 +42,7 @@ t_bool	init_philosophers(t_philo *philo)
 {
 	t_philosopher	*philosophers;
 	t_philosopher	*aux;
-	int	i;
+	int				i;
 
 	philosophers = malloc(sizeof(t_philosopher) * philo->n_philosophers);
 	if (!philosophers)
@@ -39,12 +52,8 @@ t_bool	init_philosophers(t_philo *philo)
 	{
 		philosophers[i].id = i + 1;
 		philosophers[i].status = SLEEPING;
-		if ((i + 1) % 2 != 0)
-			philosophers[i].status = THINKING;
-		philosophers[i].thread = malloc(sizeof(pthread_t));
-		if (!philosophers[i].thread)
-			return (FALSE);
-		if (pthread_create(philosophers[i].thread, NULL, philosopher_start, &philosophers[i]) != 0)
+		if (pthread_create(&philosophers[i].thread, NULL,
+				philosopher_eat_times, &philosophers[i]) != 0)
 			return (FALSE);
 		aux = &philosophers[i];
 		assign_forks(philo, &aux);
@@ -60,21 +69,16 @@ t_bool	init_philosophers(t_philo *philo)
 
 t_bool	init_forks(t_philo *philo)
 {
-	t_fork	*forks;
-	int	i;
+	pthread_mutex_t	*forks;
+	int				i;
 
-	forks = malloc(sizeof(t_fork) * philo->n_philosophers);
+	forks = malloc(sizeof(pthread_mutex_t) * philo->n_philosophers);
 	if (!forks)
 		return (FALSE);
 	i = 0;
 	while (i < philo->n_philosophers)
 	{
-		forks[i].id = i + 1;
-		forks[i].status = FREE;
-		forks[i].mutex = malloc(sizeof(pthread_mutex_t));
-		if (!forks[i].mutex)
-			return (FALSE);
-		if (pthread_mutex_init(forks[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 			return (FALSE);
 		++i;
 	}
@@ -103,6 +107,6 @@ t_philo	*init_philo(int ac, char **av)
 		return (NULL);
 	}
 	if (!init_forks(philo) || !init_philosophers(philo))
-		return free_philo(&philo);
+		return (free_philo(&philo));
 	return (philo);
 }
