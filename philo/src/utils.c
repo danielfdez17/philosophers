@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 long	ft_atol(char *s)
@@ -29,20 +41,13 @@ void	*free_philo(t_philo **philo)
 	if (*philo && (*philo)->forks)
 	{
 		while (i < (*philo)->n_philosophers)
-		{
-			pthread_mutex_destroy(&(*philo)->forks[i++].mutex);
-		}
+			pthread_mutex_destroy(&(*philo)->forks[i++]);
 		free((*philo)->forks);
 		(*philo)->forks = NULL;
 	}
 	i = 0;
 	if (*philo && (*philo)->philosophers)
 	{
-		// while (i < (*philo)->n_philosophers)
-		// {
-		// 	free((*philo)->philosophers[i].thread);
-		// 	++i;
-		// }
 		free((*philo)->philosophers);
 		(*philo)->philosophers = NULL;
 	}

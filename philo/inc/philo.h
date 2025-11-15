@@ -1,33 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <string.h>	  // memset
-#include <stdio.h>	  // printf
-#include <stdlib.h>	  // malloc, free
-#include <unistd.h>	  // usleep
-#include <sys/time.h> // gettimeofday
-#include <pthread.h>  // pthread_*
-#include <errno.h>  // pthread_*
+# include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include <errno.h>
 
-#define FORK_TAKEN_MSG "has taken a fork"
-#define IS_EATING_MSG "is eating"
-#define IS_THINKING_MSG "is thinking"
-#define IS_SLEEPING_MSG "is sleeping"
-#define DIED_MSG "died"
+# define FORK_TAKEN_MSG "has taken a fork"
+# define IS_EATING_MSG "is eating"
+# define IS_THINKING_MSG "is thinking"
+# define IS_SLEEPING_MSG "is sleeping"
+# define DIED_MSG "died"
 
-#ifndef TRUE
-#define TRUE 1
-#endif
+# ifndef TRUE
+#  define TRUE 1
+# endif
 
-#ifndef FALSE
-#define FALSE 0
-#endif
+# ifndef FALSE
+#  define FALSE 0
+# endif
 
-#ifndef MILISECS
-#define MILISECS 1000
-#endif
+# ifndef MILISECS
+#  define MILISECS 1000
+# endif
 
-typedef	short int	t_bool;
+typedef short int	t_bool;
 
 typedef enum e_philo_status
 {
@@ -37,12 +49,6 @@ typedef enum e_philo_status
 	SLEEPING = 3,
 	DEAD = 4,
 }	t_philo_status;
-
-typedef enum e_fork_status
-{
-	FREE = 0,
-	TAKEN = 1,
-}	t_fork_status;
 
 typedef struct s_philosopher
 {
@@ -58,13 +64,6 @@ typedef struct s_philosopher
 	long			n_eat;
 }	t_philosopher;
 
-typedef struct s_fork
-{
-	int 			id;
-	t_fork_status	status;
-	pthread_mutex_t	mutex;
-}	t_fork;
-
 typedef struct s_philo
 {
 	long			n_philosophers;
@@ -73,7 +72,7 @@ typedef struct s_philo
 	long			time_to_sleep;
 	long			n_eat_per_philosopher;
 	t_philosopher	*philosophers;
-	t_fork 			*forks;
+	pthread_mutex_t	*forks;
 }	t_philo;
 
 // * STATUS
@@ -91,10 +90,6 @@ void	*free_philo(t_philo **philo);
 t_bool	check_valid_args(int ac, t_philo philo);
 
 // * FORKS
-
 void	*philosopher_eat_times(void *arg);
-void	*philosopher_no_eat_times(void *arg);
-// TODO: function when last arg is not given
-
 
 #endif // PHILO_H

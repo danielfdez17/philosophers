@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,33 +12,20 @@
 
 #include "../inc/philo.h"
 
-static void	join_threads(t_philo *philo)
+void	*philosopher_eat_times(void *arg)
 {
-	int	i;
+	t_philosopher	*philo;
 
-	if (!philo)
-		return ;
-	i = 0;
-	while (i < philo->n_philosophers)
-		pthread_join(philo->philosophers[i++].thread, NULL);
-}
-
-int	main(int ac, char **av)
-{
-	t_philo	*philo;
-
-	if (ac < 5 || ac > 6)
+	philo = (t_philosopher *)arg;
+	if (philo->id % 2 == 0)
+		usleep(philo->time_to_die * MILISECS);
+	if (philo->n_eat <= 0)
 	{
-		printf("Needed between 4 and 5 args\n");
-		return (0);
+		while (philo->status != DEAD)
+			update_philo_status(philo);
+		return (NULL);
 	}
-	philo = init_philo(ac, av);
-	if (!philo)
-	{
-		printf("An error occurred when initializing t_philo\n");
-		return (0);
-	}
-	join_threads(philo);
-	free_philo(&philo);
-	return (0);
+	while (philo->status != DEAD && philo->n_eat > 0)
+		update_philo_status(philo);
+	return (NULL);
 }
