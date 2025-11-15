@@ -12,86 +12,70 @@
 
 
 # * Program name
-NAME = pipex
+NAME = philo_bonus
 
 # * Compilation
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-# CFLAGS += -fsanitize=address
+CFLAGS += -fsanitize=address
 
 # * Removal
 RM = rm -f
 
 # * Includes
-INCLUDES = -I ./inc/headers -I ./inc/libft/inc/headers/
+INCLUDES = -I ./inc/
 
 # * Objects dir
 OBJ_DIR = ./src/obj/
 
 # * Sources files
-PIPEX_DIR = ./src/
-PIPEX_SRCS = $(shell ls $(PIPEX_DIR) | grep -E ".+\.c")
-SRCS = $(PIPEX_SRCS)
+PHILO_DIR = ./src/
+PHILO_SRCS = $(shell ls $(PHILO_DIR) | grep -E ".+\.c")
+SRCS = $(PHILO_SRCS)
 
 # * Creating object files
-OBJS = $(addprefix $(OBJ_DIR), $(PIPEX_SRCS:.c=.o))
-
-# * LIBFT
-LIBFT_DIR = ./inc/libft/
-LIBFT = ./inc/libft/libft.a
+OBJS = $(addprefix $(OBJ_DIR), $(PHILO_SRCS:.c=.o))
 
 # ! RULES
 # ? Links a .c (and .h if needed) to its .o file
-$(OBJ_DIR)%.o: $(PIPEX_DIR)%.c
+$(OBJ_DIR)%.o: $(PHILO_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # ? main program compilation
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS)
 	@clear
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
 	@echo "Compiling $(NAME)"
-
-# ? libft compilation
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) all
-	@echo "Compiling libft"
 
 # ? Compiles the whole program/library
 all: obj $(NAME)
 
+# ? Creates the folder for .o files
 obj:
 	@mkdir -p $(OBJ_DIR)
 
 # ? Removes the object files
 clean:
 	@$(RM) $(OBJS)
-	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "Removing .o files"
 
 # ? Removes both object and executable files
 fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "Removing $(NAME)"
 
 # ? Rebuilds the program/library
 re: fclean all
-	@echo "Rebuilding $(LIBFT)"
-	@$(MAKE) -C $(LIBFT_DIR) re
 	@echo "Rebuilding $(NAME)"
 
 # ! Automating / Debugging rules
-# INPUT = infile "ls -l" "grep Oct" "wc -l" outfile
-INPUT = infile "ls -l" "wc -l" outfile
+
+INPUT = 2 2000 1000 1000 2
 
 run: all
 	clear
 	./$(NAME) $(INPUT)
-
-run2: all
-	clear
-	./$(NAME) infile "ls" "grep Make" outfile
 
 valgrind: all
 	clear
