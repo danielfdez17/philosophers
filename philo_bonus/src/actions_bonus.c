@@ -16,6 +16,8 @@ static void	take_forks(t_philosopher *philosopher)
 {
 	sem_wait(philosopher->forks);
 	print_status(*philosopher);
+	sem_wait(philosopher->forks);
+	print_status(*philosopher);
 	// if (philosopher->id % 2 == 0 && philosopher->right)
 	// {
 	// 	if (pthread_mutex_lock(philosopher->right) == 0)
@@ -53,6 +55,7 @@ void	philo_eat(t_philosopher *philosopher)
 	}
 	else
 		philosopher->curr_ttdie = philosopher->time_to_die;
+	sem_post(philosopher->forks);
 	sem_post(philosopher->forks);
 	// if (philosopher->right)
 	// 	pthread_mutex_unlock(philosopher->right);
