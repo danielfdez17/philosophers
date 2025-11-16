@@ -12,33 +12,18 @@
 
 #include "../inc/philo.h"
 
-static void	join_threads(t_philo *philo)
-{
-	int	i;
-
-	if (!philo)
-		return ;
-	i = 0;
-	while (i < philo->n_philosophers)
-		pthread_join(philo->philosophers[i++].thread, NULL);
-}
-
 int	main(int ac, char **av)
 {
-	t_philo	*philo;
+	t_table	table;
 
 	if (ac < 5 || ac > 6)
 	{
-		printf("Needed between 4 and 5 args\n");
+		error_exit("Needed between 4 and 5 args");
 		return (0);
 	}
-	philo = init_philo(ac, av);
-	if (!philo)
-	{
-		printf("An error occurred when initializing t_philo\n");
-		return (0);
-	}
-	join_threads(philo);
-	free_philo(&philo);
+	parse_input(&table, av);
+	init_table(&table);
+	start_dinner(&table);
+	free_table(&table);
 	return (0);
 }

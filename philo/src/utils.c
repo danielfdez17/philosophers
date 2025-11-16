@@ -12,64 +12,60 @@
 
 #include "../inc/philo.h"
 
-long	ft_atol(char *s)
+long	get_time(t_time_code time_code)
 {
-	int		i;
-	long	result;
-	int		negative;
+	struct timeval	tv;
 
-	i = 0;
-	result = 0;
-	negative = 0;
-	while (s[i] == ' ' || (s[i] >= '\t' && s[i] <= '\r'))
-		++i;
-	if (s[i] == '-' || s[i] == '+')
-		if (s[i++] == '-')
-			negative = 1;
-	while (s[i] >= '0' && s[i] <= '9')
-		result = result * 10 + (s[i++] - '0');
-	if (negative)
-		return (-result);
-	return (result);
+	if (gettimeofday(&tv, NULL))
+		error_exit("gettimeofday failed");
+	if (time_code == SECONDS)
+		return (tv.tv_sec + tv.tv_usec / 1e6);
+	if (time_code == MILISECONDS)
+		return ((tv.tv_sec * 1e3) + (tv.tv_usec / 1e3));
+	if (time_code == MICROSECONDS)
+		return ((tv.tv_sec * 1e6) + tv.tv_usec);
+	error_exit("Wrong input to get_time");
+	return (-1);
 }
 
-void	*free_philo(t_philo **philo)
+void	precise_usleep(long usec, t_table *table)
+{
+	long	start;
+	long	elapsed;
+	long	remaining;
+
+	start = get_time(MICROSECONDS);
+	while (get_time(MICROSECONDS) - start < usec)
+	{
+		if (is_dinner_finished(table))
+			break ;
+		elapsed = get_time(MICROSECONDS) - start;
+		remaining = usec - elapsed;
+		if (remaining > 1e3) // * miliseconds
+			usleep(remaining / 2);
+		else
+		{
+			while (get_time(MICROSECONDS) - start < usec)
+				;
+		}
+	}
+}
+
+void	error_exit(const char *error)
+{
+	printf(RED"%s\n"RESET, error);
+	exit(EXIT_FAILURE);
+}
+
+void	free_table(t_table *table)
 {
 	int	i;
 
-	i = 0;
-	if (*philo && (*philo)->forks)
-	{
-		while (i < (*philo)->n_philosophers)
-			pthread_mutex_destroy(&(*philo)->forks[i++]);
-		free((*philo)->forks);
-		(*philo)->forks = NULL;
-	}
-	i = 0;
-	if (*philo && (*philo)->philosophers)
-	{
-		free((*philo)->philosophers);
-		(*philo)->philosophers = NULL;
-	}
-	if (*philo)
-	{
-		free(*philo);
-		*philo = NULL;
-	}
-	return (NULL);
-}
-
-t_bool	check_valid_args(int ac, t_philo philo)
-{
-	if (philo.n_philosophers <= 0)
-		return (FALSE);
-	if (philo.time_to_die <= 0)
-		return (FALSE);
-	if (philo.time_to_eat <= 0)
-		return (FALSE);
-	if (philo.time_to_sleep <= 0)
-		return (FALSE);
-	if (ac == 6 && philo.n_eat_per_philosopher <= 0)
-		return (FALSE);
-	return (TRUE);
+	i = -1;
+	while (++i < table->n_philos)
+		safe_mutex_handler(&table->philos[i].philo_mtx, DESTROY);
+	safe_mutex_handler(&table->table_mtx, DESTROY);
+	safe_mutex_handler(&table->print_mtx, DESTROY);
+	free(table->philos);
+	free(table->forks);
 }

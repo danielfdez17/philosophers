@@ -12,38 +12,27 @@
 
 #include "../inc/philo.h"
 
-char	*get_status_msg(t_philo_status status)
+void	print_status(t_philo *philo, t_philo_status status)
 {
-	if (status == FORK_TAKEN)
-		return (FORK_TAKEN_MSG);
-	if (status == EATING)
-		return (IS_EATING_MSG);
-	if (status == THINKING)
-		return (IS_THINKING_MSG);
-	if (status == SLEEPING)
-		return (IS_SLEEPING_MSG);
-	return (DIED_MSG);
+	long	elapsed;
+	bool	finished;
+
+	elapsed = get_time(MILISECONDS);
+	finished = is_dinner_finished(philo->table);
+	if (philo->is_full)
+		return ;
+	safe_mutex_handler(&philo->table->print_mtx, LOCK);
+	if (status == FORK_TAKEN && !finished)
+		printf(WHITE"%-6ld"YELLOW "%d has taken a fork\n"RESET, elapsed, philo->id);
+	else if (status == EATING && !finished)
+		printf(WHITE"%-6ld"CYAN " %d is eating\n"RESET, elapsed, philo->id);
+	else if (status == SLEEPING && !finished)
+		printf(WHITE"%-6ld"GREEN " %d is sleeping\n"RESET, elapsed, philo->id);
+	else if (status == THINKING && !finished)
+		printf(WHITE"%-6ld"MAGENTA " %d is thinking\n"RESET, elapsed, philo->id);
+	else if (status == EATING)
+		printf(RED"%-6ld %d has taken a fork\n"RESET, elapsed, philo->id);
+	printf("hola\n");
+	safe_mutex_handler(&philo->table->print_mtx, UNLOCK);
 }
 
-void	print_status(t_philosopher philosopher)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	printf("%ld %d %s\n", tv.tv_usec, philosopher.id,
-		get_status_msg(philosopher.status));
-}
-
-void	update_philo_status(t_philosopher *philosopher)
-{
-	if (philosopher->curr_ttdie <= 0)
-		philo_dead(philosopher);
-	else if (philosopher->status == FORK_TAKEN)
-		philo_eat(philosopher);
-	else if (philosopher->status == EATING)
-		philo_sleep(philosopher);
-	else if (philosopher->status == SLEEPING)
-		philo_think(philosopher);
-	else if (philosopher->status == THINKING)
-		philosopher->status = FORK_TAKEN;
-}

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   colors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,22 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#ifndef COLORS_H
+# define COLORS_H
 
-void	*philosopher_eat_times(void *arg)
-{
-	t_philosopher	*philo;
+# define RESET 		"\033[0m"
+# define RED 		"\033[31m"
+# define GREEN 		"\033[32m"
+# define YELLOW 	"\033[33m"
+# define BLUE 		"\033[34m"
+# define MAGENTA 	"\033[35m"
+# define CYAN 		"\033[36m"
+# define WHITE 		"\033[37m"
 
-	philo = (t_philosopher *)arg;
-	if (philo->id % 2 == 0)
-		usleep(philo->time_to_die * MILISECS);
-	if (philo->n_eat <= 0)
-	{
-		while (philo->status != DEAD)
-			update_philo_status(philo);
-		return (NULL);
-	}
-	while (philo->status != DEAD && philo->n_eat > 0)
-		update_philo_status(philo);
-	return (NULL);
-}
+#endif // COLORS_H

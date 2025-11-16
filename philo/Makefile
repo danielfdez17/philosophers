@@ -30,12 +30,13 @@ OBJ_DIR = ./src/obj/
 
 # * Sources files
 PHILO_DIR = ./src/
-PHILO_SRCS =	actions.c \
-				init.c \
-				main.c \
-				philosophers.c \
-				status.c \
-				utils.c
+PHILO_SRCS = $(shell ls $(PHILO_DIR) | grep -E ".+\.c")
+# PHILO_SRCS =	actions.c \
+# 				init.c \
+# 				main.c \
+# 				philosophers.c \
+# 				status.c \
+# 				utils.c
 SRCS = $(PHILO_SRCS)
 
 # * Creating object files
@@ -76,7 +77,7 @@ re: fclean all
 
 # ! Automating / Debugging rules
 
-INPUT = 2 2000 1000 1000 2
+INPUT = 4 310 200 100
 
 run: all
 	clear
