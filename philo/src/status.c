@@ -6,7 +6,7 @@
 /*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
-/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:25:23 by danfern3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_status(t_philo *philo, t_philo_status status)
 		return ;
 	safe_mutex_handler(&philo->table->print_mtx, LOCK);
 	if (status == FORK_TAKEN && !finished)
-		printf(WHITE"%-6ld"YELLOW "%d has taken a fork\n"RESET, elapsed, philo->id);
+		printf(WHITE"%-6ld"YELLOW " %d has taken a fork\n"RESET, elapsed, philo->id);
 	else if (status == EATING && !finished)
 		printf(WHITE"%-6ld"CYAN " %d is eating\n"RESET, elapsed, philo->id);
 	else if (status == SLEEPING && !finished)
@@ -32,7 +32,6 @@ void	print_status(t_philo *philo, t_philo_status status)
 		printf(WHITE"%-6ld"MAGENTA " %d is thinking\n"RESET, elapsed, philo->id);
 	else if (status == EATING)
 		printf(RED"%-6ld %d has taken a fork\n"RESET, elapsed, philo->id);
-	printf("hola\n");
 	safe_mutex_handler(&philo->table->print_mtx, UNLOCK);
 }
 

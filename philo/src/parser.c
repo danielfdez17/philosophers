@@ -6,7 +6,7 @@
 /*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
-/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:11:14 by danfern3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static long	ft_atol(char *s)
 		++i;
 	if (s[i] == '+')
 		++i;
-	else if (s[i++] == '-')
+	else if (s[i] == '-')
 		error_exit("Required only positive values");
 	while (s[i] >= '0' && s[i] <= '9')
 		result = result * 10 + (s[i++] - '0');

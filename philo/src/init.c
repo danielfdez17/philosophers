@@ -6,7 +6,7 @@
 /*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
-/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:14:55 by danfern3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	init_philo(t_table *table)
 		table->philos[i].table = table;
 		table->philos[i].is_full = false;
 		table->philos[i].n_eat = 0;
+		table->philos[i].last_meal_time = 0;
 		safe_mutex_handler(&table->philos[i].philo_mtx, INIT);
 		assign_forks(&table->philos[i], table->forks, i);
 	}

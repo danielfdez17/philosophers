@@ -6,7 +6,7 @@
 #    By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/10 09:34:42 by danfern3          #+#    #+#              #
-#    Updated: 2025/11/03 13:17:15 by danfern3         ###   ########.fr        #
+#    Updated: 2025/11/18 10:26:18 by danfern3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,7 @@ re: fclean all
 
 # ! Automating / Debugging rules
 
-INPUT = 4 310 200 100
+INPUT = 1 310 200 100
 
 run: all
 	clear
