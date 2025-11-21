@@ -60,7 +60,7 @@ static void	mutex_error_handler(int status, t_opcode opcode)
 		error_exit("Mutex is locked");
 }
 
-void	safe_mutex_handler(t_mtx *mutex, t_opcode opcode)
+void	safe_mutex_handler(t_mutex *mutex, t_opcode opcode)
 {
 	if (opcode == LOCK)
 		mutex_error_handler(pthread_mutex_lock(mutex), opcode);

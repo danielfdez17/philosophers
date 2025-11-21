@@ -24,7 +24,7 @@ void	*lone_philo(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all_threads(philo->table);
-	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECONDS));
+	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECOND));
 	increase_long(&philo->table->table_mtx, &philo->table->n_threads_running);
 	print_status(philo, FORK_TAKEN);
 	while (!is_dinner_finished(philo->table))
@@ -38,7 +38,7 @@ static void	eat(t_philo *philo)
 	print_status(philo, FORK_TAKEN);
 	safe_mutex_handler(philo->right, LOCK);
 	print_status(philo, FORK_TAKEN);
-	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECONDS));
+	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECOND));
 	philo->n_eat++;
 	print_status(philo, EATING);
 	precise_usleep(philo->table->time_to_eat, philo->table);
@@ -55,7 +55,7 @@ void	*dinner(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all_threads(philo->table);
-	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECONDS));
+	set_long(&philo->philo_mtx, &philo->last_meal_time, get_time(MILISECOND));
 	increase_long(&philo->table->table_mtx, &philo->table->n_threads_running);
 	de_synchronize_philos(philo);
 	while (!is_dinner_finished(philo->table))
@@ -85,11 +85,11 @@ void	start_dinner(t_table *table)
 			safe_thread_handler(&table->philos[i].thread, dinner, &table->philos[i], CREATE);
 	}
 	safe_thread_handler(&table->monitor, monitor_dinner, table, CREATE);
-	table->start_time = get_time(MILISECONDS);
+	table->start_time = get_time(MILISECOND);
 	set_bool(&table->table_mtx, &table->all_threads_ready, true);
 	i = -1;
 	while (++i < table->n_philos)
-		safe_thread_handler(&table->philos[i].thread, dinner, &table->philos[i], JOIN);
+		safe_thread_handler(&table->philos[i].thread, NULL, NULL, JOIN);
 	set_bool(&table->table_mtx, &table->end_dinner, true);
 	safe_thread_handler(&table->monitor, NULL, NULL, JOIN);
 }

@@ -18,12 +18,12 @@ long	get_time(t_time_code time_code)
 
 	if (gettimeofday(&tv, NULL))
 		error_exit("gettimeofday failed");
-	if (time_code == SECONDS)
-		return (tv.tv_sec + tv.tv_usec / 1e6);
-	if (time_code == MILISECONDS)
-		return ((tv.tv_sec * 1e3) + (tv.tv_usec / 1e3));
-	if (time_code == MICROSECONDS)
-		return ((tv.tv_sec * 1e6) + tv.tv_usec);
+	if (time_code == SECOND)
+		return (tv.tv_sec + tv.tv_usec / MICROSECONDS);
+	if (time_code == MILISECOND)
+		return ((tv.tv_sec * MILISECONDS) + (tv.tv_usec / MILISECONDS));
+	if (time_code == MICROSECOND)
+		return ((tv.tv_sec * MICROSECONDS) + tv.tv_usec);
 	error_exit("Wrong input to get_time");
 	return (-1);
 }
@@ -34,18 +34,18 @@ void	precise_usleep(long usec, t_table *table)
 	long	elapsed;
 	long	remaining;
 
-	start = get_time(MICROSECONDS);
-	while (get_time(MICROSECONDS) - start < usec)
+	start = get_time(MICROSECOND);
+	while (get_time(MICROSECOND) - start < usec)
 	{
 		if (is_dinner_finished(table))
 			break ;
-		elapsed = get_time(MICROSECONDS) - start;
+		elapsed = get_time(MICROSECOND) - start;
 		remaining = usec - elapsed;
-		if (remaining > 1e3) // * miliseconds
+		if (remaining > MILISECONDS) // * miliseconds
 			usleep(remaining / 2);
 		else
 		{
-			while (get_time(MICROSECONDS) - start < usec)
+			while (get_time(MICROSECOND) - start < usec)
 				;
 		}
 	}

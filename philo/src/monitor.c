@@ -7,8 +7,8 @@ static bool	is_philo_dead(t_philo *philo)
 
 	if (get_bool(&philo->philo_mtx, &philo->is_full))
 		return (false);
-	elapsed = get_time(MILISECONDS) - get_long(&philo->philo_mtx, &philo->last_meal_time);
-	ttdie = philo->table->time_to_die / 1e3;
+	elapsed = get_time(MILISECOND) - get_long(&philo->philo_mtx, &philo->last_meal_time);
+	ttdie = philo->table->time_to_die / MILISECONDS;
 	return (elapsed > ttdie);
 }
 

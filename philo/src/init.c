@@ -12,7 +12,7 @@
 
 #include "../inc/philo.h"
 
-static void	assign_forks(t_philo *philo, t_mtx *forks, int idx)
+static void	assign_forks(t_philo *philo, t_mutex *forks, int idx)
 {
 	int	n_philo;
 
@@ -52,8 +52,9 @@ void	init_table(t_table *table)
 	table->all_threads_ready = false;
 	table->n_threads_running = 0;
 	table->philos = safe_malloc(table->n_philos * sizeof(t_philo));
-	table->forks = safe_malloc(table->n_philos * sizeof(t_mtx));
+	table->forks = safe_malloc(table->n_philos * sizeof(t_mutex));
 	safe_mutex_handler(&table->table_mtx, INIT);
+	safe_mutex_handler(&table->print_mtx, INIT);
 	while (++i < table->n_philos)
 		safe_mutex_handler(&table->forks[i], INIT);
 	init_philo(table);

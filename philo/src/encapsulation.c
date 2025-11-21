@@ -1,13 +1,13 @@
 #include "../inc/philo.h"
 
-void	set_bool(t_mtx *mtx, bool *dest, bool value)
+void	set_bool(t_mutex *mtx, bool *dest, bool value)
 {
 	safe_mutex_handler(mtx, LOCK);
 	*dest = value;
 	safe_mutex_handler(mtx, UNLOCK);
 }
 
-bool	get_bool(t_mtx *mtx, bool *value)
+bool	get_bool(t_mutex *mtx, bool *value)
 {
 	bool	ret;
 
@@ -17,14 +17,14 @@ bool	get_bool(t_mtx *mtx, bool *value)
 	return (ret);
 }
 
-void	set_long(t_mtx *mtx, long *dest, long value)
+void	set_long(t_mutex *mtx, long *dest, long value)
 {
 	safe_mutex_handler(mtx, LOCK);
 	*dest = value;
 	safe_mutex_handler(mtx, UNLOCK);
 }
 
-long	get_long(t_mtx *mtx, long *value)
+long	get_long(t_mutex *mtx, long *value)
 {
 	long	ret;
 

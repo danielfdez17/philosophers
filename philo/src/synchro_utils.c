@@ -6,7 +6,7 @@ void	wait_all_threads(t_table *table)
 		;
 }
 
-bool	all_threads_running(t_mtx *mutex, long *threads, long n_philos)
+bool	all_threads_running(t_mutex *mutex, long *threads, long n_philos)
 {
 	bool	ret;
 
@@ -16,7 +16,7 @@ bool	all_threads_running(t_mtx *mutex, long *threads, long n_philos)
 	return (ret);
 }
 
-void	increase_long(t_mtx *mutex, long *value)
+void	increase_long(t_mutex *mutex, long *value)
 {
 	safe_mutex_handler(mutex, LOCK);
 	(*value)++;
