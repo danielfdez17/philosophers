@@ -1,5 +1,5 @@
-philo
-philo_bonus
+philo/philo
+philo_bonus/philo_bonus
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,c,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,c,cmake
