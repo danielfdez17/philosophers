@@ -41,7 +41,7 @@ void	precise_usleep(long usec, t_table *table)
 			break ;
 		elapsed = get_time(MICROSECOND) - start;
 		remaining = usec - elapsed;
-		if (remaining > MILISECONDS) // * miliseconds
+		if (remaining > MILISECONDS)
 			usleep(remaining / 2);
 		else
 		{

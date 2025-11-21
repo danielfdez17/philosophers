@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dinner.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	think(t_philo *philo, bool pre_simulation)
@@ -10,10 +22,10 @@ void	think(t_philo *philo, bool pre_simulation)
 		print_status(philo, THINKING);
 	if (philo->table->n_philos % 2 == 0)
 		return ;
-	tteat = philo->table->time_to_eat;	
-	ttsleep = philo->table->time_to_sleep;	
+	tteat = philo->table->time_to_eat;
+	ttsleep = philo->table->time_to_sleep;
 	ttthink = tteat * 2 - ttsleep;
-	if (ttthink < 0)	
+	if (ttthink < 0)
 		ttthink = 0;
 	precise_usleep(ttthink * 0.42, philo->table);
 }
@@ -78,11 +90,13 @@ void	start_dinner(t_table *table)
 	if (table->n_eat_per_philosopher == 0)
 		return ;
 	if (table->n_philos == 1)
-		safe_thread_handler(&table->philos[0].thread, lone_philo, &table->philos[0], CREATE);
+		safe_thread_handler(&table->philos[0].thread, lone_philo,
+			&table->philos[0], CREATE);
 	else
 	{
 		while (++i < table->n_philos)
-			safe_thread_handler(&table->philos[i].thread, dinner, &table->philos[i], CREATE);
+			safe_thread_handler(&table->philos[i].thread, dinner,
+				&table->philos[i], CREATE);
 	}
 	safe_thread_handler(&table->monitor, monitor_dinner, table, CREATE);
 	table->start_time = get_time(MILISECOND);

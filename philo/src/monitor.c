@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static bool	is_philo_dead(t_philo *philo)
@@ -7,7 +19,8 @@ static bool	is_philo_dead(t_philo *philo)
 
 	if (get_bool(&philo->philo_mtx, &philo->is_full))
 		return (false);
-	elapsed = get_time(MILISECOND) - get_long(&philo->philo_mtx, &philo->last_meal_time);
+	elapsed = get_time(MILISECOND) - get_long(&philo->philo_mtx,
+			&philo->last_meal_time);
 	ttdie = philo->table->time_to_die / MILISECONDS;
 	return (elapsed > ttdie);
 }

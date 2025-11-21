@@ -35,7 +35,6 @@
 #  define NANOSECONDS 1e9
 # endif
 
-
 typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_table	t_table;
@@ -96,7 +95,6 @@ typedef struct s_table
 	t_mutex			print_mtx;
 	t_mutex			*forks;
 	t_philo			*philos;
-	
 }	t_table;
 
 // * STATUS
@@ -110,7 +108,8 @@ void	init_table(t_table *table);
 // t_table	*init_philo(int ac, char **av);
 // * SAFE FUNCTIONS
 void	*safe_malloc(size_t bytes);
-void	safe_thread_handler(pthread_t *thread, void *(*f)(void *), void *data, t_opcode opcode);
+void	safe_thread_handler(pthread_t *thread, void *(*f)(void *),
+			void *data, t_opcode opcode);
 void	safe_mutex_handler(t_mutex *mutex, t_opcode opcode);
 
 // * PARSER

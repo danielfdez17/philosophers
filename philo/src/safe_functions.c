@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   safe_functions.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danfern3 <danfern3@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 08:07:54 by danfern3          #+#    #+#             */
+/*   Updated: 2025/11/10 12:38:25 by danfern3         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	*safe_malloc(size_t bytes)
@@ -24,13 +36,14 @@ static void	thread_error_handler(int status, t_opcode opcode)
 		error_exit("The value specified by thread is not joinable");
 	if (status == ESRCH)
 		error_exit("No thread could be found corresponding to that"
-				"specified by the given thread ID, thread");
+			"specified by the given thread ID, thread");
 	if (status == EDEADLK)
 		error_exit("A deadlock was detected or the value of"
-				"thread specifies the calling thread");
+			"thread specifies the calling thread");
 }
 
-void	safe_thread_handler(pthread_t *thread, void *(*f)(void *), void *data, t_opcode opcode)
+void	safe_thread_handler(pthread_t *thread, void *(*f)(void *), void *data,
+	t_opcode opcode)
 {
 	if (opcode == CREATE)
 		thread_error_handler(pthread_create(thread, NULL, f, data), opcode);
@@ -51,11 +64,13 @@ static void	mutex_error_handler(int status, t_opcode opcode)
 	if (status == EINVAL && opcode == INIT)
 		error_exit("The value specified by attr is invalid");
 	if (status == EDEADLK)
-		error_exit("A deadlock would occur if the thread blocked waiting for mutex");
+		error_exit("A deadlock would occur if the"
+			" thread blocked waiting for mutex");
 	if (status == EPERM)
 		error_exit("The current thread does not hold a lock on mutex");
 	if (status == ENOMEM)
-		error_exit("The process cannot allocate enough memory to create another mutex");
+		error_exit("The process cannot allocate enough"
+			" memory to create another mutex");
 	if (status == EBUSY)
 		error_exit("Mutex is locked");
 }
