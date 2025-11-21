@@ -30,13 +30,17 @@ OBJ_DIR = ./src/obj/
 
 # * Sources files
 PHILO_DIR = ./src/
-PHILO_SRCS = $(shell ls $(PHILO_DIR) | grep -E ".+\.c")
-# PHILO_SRCS =	actions.c \
-# 				init.c \
-# 				main.c \
-# 				philosophers.c \
-# 				status.c \
-# 				utils.c
+# PHILO_SRCS = $(shell ls $(PHILO_DIR) | grep -E ".+\.c")
+PHILO_SRCS =	dinner.c \
+				encapsulation.c \
+				init.c \
+				main.c \
+				monitor.c \
+				parser.c \
+				safe_functions.c \
+				status.c \
+				synchro_utils.c \
+				utils.c
 SRCS = $(PHILO_SRCS)
 
 # * Creating object files
@@ -77,19 +81,19 @@ re: fclean all
 
 # ! Automating / Debugging rules
 
-INPUT = 1 310 200 100
+# INPUT = 1 310 200 100
 
-run: all
-	clear
-	./$(NAME) $(INPUT)
+# run: all
+# 	clear
+# 	./$(NAME) $(INPUT)
 
-valgrind: all
-	clear
-	valgrind ./$(NAME) $(INPUT)
+# valgrind: all
+# 	clear
+# 	valgrind ./$(NAME) $(INPUT)
 
-debug: all
-	clear
-	gdb ./$(NAME)
+# debug: all
+# 	clear
+# 	gdb ./$(NAME)
 
 # Protects all rules from files with same name
 .PHONY: all obj clean fclean re run valgrind debug
