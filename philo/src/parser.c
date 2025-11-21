@@ -12,6 +12,11 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Converts a string @param s to a long integer.
+ * Exits with an error if the string is not a valid positive integer
+ * or if it exceeds INT_MAX.
+ */
 static long	ft_atol(char *s)
 {
 	int		i;
@@ -32,6 +37,9 @@ static long	ft_atol(char *s)
 	return (result);
 }
 
+/**
+ * Parses command-line @param av and populates the @param table structure.
+ */
 void	parse_input(t_table *table, char **av)
 {
 	table->n_philos = ft_atol(av[1]);

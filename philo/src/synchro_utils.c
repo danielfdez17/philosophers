@@ -12,13 +12,19 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Waits until all philosopher threads are ready.
+ */
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool(&table->table_mtx, &table->all_threads_ready))
 		;
 }
 
-bool	all_threads_running(t_mutex *mutex, long *threads, long n_philos)
+/**
+ * Checks if all philosopher threads are running.
+ */
+bool	are_all_threads_running(t_mutex *mutex, long *threads, long n_philos)
 {
 	bool	ret;
 
@@ -28,6 +34,9 @@ bool	all_threads_running(t_mutex *mutex, long *threads, long n_philos)
 	return (ret);
 }
 
+/**
+ * Increases a long @param value in a thread-safe manner.
+ */
 void	increase_long(t_mutex *mutex, long *value)
 {
 	safe_mutex_handler(mutex, LOCK);
@@ -35,6 +44,9 @@ void	increase_long(t_mutex *mutex, long *value)
 	safe_mutex_handler(mutex, UNLOCK);
 }
 
+/**
+ * De-synchronizes philosophers to prevent deadlocks.
+ */
 void	de_synchronize_philos(t_philo *philo)
 {
 	if (philo->table->n_philos % 2 == 0)

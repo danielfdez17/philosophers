@@ -99,13 +99,10 @@ typedef struct s_table
 
 // * STATUS
 void	print_status(t_philo *philo, t_philo_status status);
-// void	update_philo_status(t_philo *philosopher);
 
 // * INITIALIZATION
 void	init_table(t_table *table);
-// t_bool	init_philosophers(t_table *philo);
-// t_bool	init_forks(t_table *philo);
-// t_table	*init_philo(int ac, char **av);
+
 // * SAFE FUNCTIONS
 void	*safe_malloc(size_t bytes);
 void	safe_thread_handler(pthread_t *thread, void *(*f)(void *),
@@ -119,9 +116,7 @@ void	parse_input(t_table *table, char **av);
 long	get_time(t_time_code time_code);
 void	precise_usleep(long usec, t_table *table);
 void	error_exit(const char *error);
-// long	ft_atol(char *s);
 void	free_table(t_table *table);
-// t_bool	check_valid_args(int ac, t_table philo);
 
 // * ENCAPSULATION
 void	set_bool(t_mutex *mtx, bool *dest, bool value);
@@ -132,22 +127,15 @@ bool	is_dinner_finished(t_table *table);
 
 // * SYNCHRO UTILS
 void	wait_all_threads(t_table *table);
-bool	all_threads_running(t_mutex *mutex, long *threads, long n_philos);
+bool	are_all_threads_running(t_mutex *mutex, long *threads, long n_philos);
 void	increase_long(t_mutex *mutex, long *value);
 
 // * START
 void	start_dinner(t_table *table);
 void	think(t_philo *philo, bool pre_simulation);
 void	de_synchronize_philos(t_philo *philo);
-// void	*philosopher_eat_times(void *arg);
 
 // * MONITORING
 void	*monitor_dinner(void *arg);
-
-// * ACTIONS
-// void	philo_eat(t_philo *philosopher);
-// void	philo_sleep(t_philo *philosopher);
-// void	philo_dead(t_philo *philosopher);
-// void	philo_think(t_philo *philosopher);
 
 #endif // PHILO_H

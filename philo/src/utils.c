@@ -12,6 +12,9 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Gets the current time in the specified unit.
+ */
 long	get_time(t_time_code time_code)
 {
 	struct timeval	tv;
@@ -28,6 +31,10 @@ long	get_time(t_time_code time_code)
 	return (-1);
 }
 
+/**
+ * Sleeps for a precise amount of microseconds, checking periodically
+ * if the dinner has finished to exit early if needed.
+ */
 void	precise_usleep(long usec, t_table *table)
 {
 	long	start;
@@ -51,12 +58,18 @@ void	precise_usleep(long usec, t_table *table)
 	}
 }
 
+/**
+ * Prints an error message and exits the program.
+ */
 void	error_exit(const char *error)
 {
 	printf(RED"%s\n"RESET, error);
 	exit(EXIT_FAILURE);
 }
 
+/**
+ * Frees all allocated resources in the table structure.
+ */
 void	free_table(t_table *table)
 {
 	int	i;

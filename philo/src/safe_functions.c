@@ -12,6 +12,9 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Allocates memory safely, exiting on failure.
+ */
 void	*safe_malloc(size_t bytes)
 {
 	void	*result;
@@ -22,6 +25,9 @@ void	*safe_malloc(size_t bytes)
 	return (result);
 }
 
+/**
+ * Handles thread operations safely, exiting on failure.
+ */
 static void	thread_error_handler(int status, t_opcode opcode)
 {
 	if (status == 0)
@@ -42,6 +48,9 @@ static void	thread_error_handler(int status, t_opcode opcode)
 			"thread specifies the calling thread");
 }
 
+/**
+ * Handles mutex operations safely, exiting on failure.
+ */
 void	safe_thread_handler(pthread_t *thread, void *(*f)(void *), void *data,
 	t_opcode opcode)
 {
@@ -55,6 +64,9 @@ void	safe_thread_handler(pthread_t *thread, void *(*f)(void *), void *data,
 		error_exit("Thread operation not supported");
 }
 
+/**
+ * Handles mutex errors and exits with appropriate messages.
+ */
 static void	mutex_error_handler(int status, t_opcode opcode)
 {
 	if (status == 0)
@@ -75,6 +87,9 @@ static void	mutex_error_handler(int status, t_opcode opcode)
 		error_exit("Mutex is locked");
 }
 
+/**
+ * Handles mutex operations safely, exiting on failure.
+ */
 void	safe_mutex_handler(t_mutex *mutex, t_opcode opcode)
 {
 	if (opcode == LOCK)

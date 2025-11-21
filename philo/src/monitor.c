@@ -12,6 +12,9 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Checks if a @param philo is dead based on the time since their last meal.
+ */
 static bool	is_philo_dead(t_philo *philo)
 {
 	long	elapsed;
@@ -25,14 +28,18 @@ static bool	is_philo_dead(t_philo *philo)
 	return (elapsed > ttdie);
 }
 
+/**
+ * Monitor thread function that checks the status of philosophers.
+ * It ends the dinner if any philosopher dies or if all have eaten enough.
+ */
 void	*monitor_dinner(void *arg)
 {
 	t_table	*table;
 	int		i;
 
 	table = (t_table *)arg;
-	while (!all_threads_running(&table->table_mtx, &table->n_threads_running,
-			table->n_philos))
+	while (!are_all_threads_running(&table->table_mtx,
+			&table->n_threads_running, table->n_philos))
 		;
 	while (!is_dinner_finished(table))
 	{

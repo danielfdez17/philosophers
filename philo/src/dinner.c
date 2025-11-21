@@ -12,6 +12,10 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Introduces a delay for philosophers with odd IDs in odd-numbered groups
+ * to reduce contention for forks.
+ */
 void	think(t_philo *philo, bool pre_simulation)
 {
 	long	tteat;
@@ -30,6 +34,10 @@ void	think(t_philo *philo, bool pre_simulation)
 	precise_usleep(ttthink * 0.42, philo->table);
 }
 
+/**
+ * Handles the case where there is only one philosopher.
+ * The philosopher picks up a fork and waits until the dinner ends.
+ */
 void	*lone_philo(void *arg)
 {
 	t_philo	*philo;
@@ -44,6 +52,10 @@ void	*lone_philo(void *arg)
 	return (NULL);
 }
 
+/**
+ * Simulates the eating action of a @param philo.
+ * The philosopher picks up both forks, eats, and then puts down the forks.
+ */
 static void	eat(t_philo *philo)
 {
 	safe_mutex_handler(philo->left, LOCK);
@@ -61,6 +73,11 @@ static void	eat(t_philo *philo)
 	safe_mutex_handler(philo->right, UNLOCK);
 }
 
+/**
+ * Main dinner routine for each philosopher.
+ * Philosophers wait for all threads to be ready, then enter a loop of eating,
+ * sleeping, and thinking until the dinner ends or they are full.
+ */
 void	*dinner(void *arg)
 {
 	t_philo	*philo;
@@ -82,6 +99,11 @@ void	*dinner(void *arg)
 	return (NULL);
 }
 
+/**
+ * Starts the dinner simulation by creating philosopher threads and the monitor
+ * thread. It waits for all philosopher threads to finish before ending
+ * the dinner.
+ */
 void	start_dinner(t_table *table)
 {
 	int	i;

@@ -12,6 +12,10 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Assigns forks to a @param philo based on their @param idx.
+ * Even-indexed philosophers pick up the right fork first.
+ */
 static void	assign_forks(t_philo *philo, t_mutex *forks, int idx)
 {
 	int	n_philo;
@@ -26,6 +30,9 @@ static void	assign_forks(t_philo *philo, t_mutex *forks, int idx)
 	}
 }
 
+/**
+ * Initializes each philosopher in the dining @param table.
+ */
 static void	init_philo(t_table *table)
 {
 	int	i;
@@ -43,6 +50,9 @@ static void	init_philo(t_table *table)
 	}
 }
 
+/**
+ * Initializes the dining @param table, philosophers, and forks.
+ */
 void	init_table(t_table *table)
 {
 	int	i;

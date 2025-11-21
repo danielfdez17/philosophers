@@ -12,6 +12,9 @@
 
 #include "../inc/philo.h"
 
+/**
+ * Prints the current @param status of a @param philo in a thread-safe manner.
+ */
 void	print_status(t_philo *philo, t_philo_status status)
 {
 	long	elapsed;
