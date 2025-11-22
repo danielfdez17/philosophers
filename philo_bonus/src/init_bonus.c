@@ -31,10 +31,10 @@ void	init_table(t_table *table)
 	table->n_processes_running = 0;
 	table->philos = safe_malloc(table->n_philos * sizeof(t_philo));
 	table->table_sem = safe_sem_open(TABLE_SEM_NAME, O_CREAT,
-		O_RDONLY | O_WRONLY, 1);
+		0644, 1);
 	table->print_sem = safe_sem_open(PRINT_SEM_NAME, O_CREAT,
-		O_RDONLY | O_WRONLY, 1);
+		0644, 1);
 	table->print_sem = safe_sem_open(FORKS_SEM_NAME, O_CREAT,
-		O_RDONLY | O_WRONLY, table->n_philos);
+		0644, table->n_philos);
 	init_philo(table);
 }

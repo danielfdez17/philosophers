@@ -49,7 +49,7 @@ sem_t	*safe_sem_open(const char *name, int oflag, mode_t mode,
 	sem_t	*sem;
 
 	sem = sem_open(name, oflag, mode, value);
-	if (!sem)
-		error_exit("Error when creating semaphore");
+	if (sem == SEM_FAILED)
+		error_exit("Error when opening/creating semaphore");
 	return (sem);
 }

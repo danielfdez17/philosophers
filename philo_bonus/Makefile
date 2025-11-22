@@ -81,19 +81,19 @@ rebonus: fclean bonus
 
 # ! Automating / Debugging rules
 
-# INPUT = 1 310 200 100
+INPUT = 1 310 200 100
 
-# run: bonus
-# 	clear
-# 	./$(NAME) $(INPUT)
+run: bonus
+	clear
+	./$(NAME) $(INPUT)
 
 # valgrind: bonus
 # 	clear
 # 	valgrind ./$(NAME) $(INPUT)
 
-# debug: bonus
-# 	clear
-# 	gdb ./$(NAME)
+debug: bonus
+	clear
+	gdb ./$(NAME)
 
 # Protects all rules from files with same name
 .PHONY: bonus obj clean fclean rebonus run valgrind debug
