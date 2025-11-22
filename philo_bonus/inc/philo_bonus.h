@@ -114,11 +114,12 @@ void	init_table(t_table *table);
 void	*safe_malloc(size_t bytes);
 sem_t	*safe_sem_open(const char *name, int oflag, mode_t mode,
 	unsigned int value);
-void	safe_process_handler(pid_t pid, t_opcode opcode);
-void	process_error_handler(int status, t_opcode opcode);
+void	safe_process_handler(pid_t *pid, t_opcode opcode);
+void	process_error_handler(int status);
 void	sem_error_handler(int status, t_opcode opcode);
-// void	safe_thread_handler(pthread_t *thread, void *(*f)(void *),
-// 			void *data, t_opcode opcode);
+void	safe_sem_handler(t_sem *sem, t_opcode opcode);
+void	safe_thread_handler(pthread_t *thread, void *(*f)(void *),
+			void *data, t_opcode opcode);
 // void	safe_mutex_handler(t_mutex *mutex, t_opcode opcode);
 
 // * PARSER
@@ -131,23 +132,23 @@ void	error_exit(const char *error);
 void	free_table(t_table *table);
 
 // * ENCAPSULATION
-// void	set_bool(t_mutex *mtx, bool *dest, bool value);
-// bool	get_bool(t_mutex *mtx, bool *value);
-// void	set_long(t_mutex *mtx, long *dest, long value);
-// long	get_long(t_mutex *mtx, long *value);
-// bool	is_dinner_finished(t_table *table);
+void	set_bool(t_sem *sem, bool *dest, bool value);
+bool	get_bool(t_sem *sem, bool *value);
+void	set_long(t_sem *sem, long *dest, long value);
+long	get_long(t_sem *sem, long *value);
+bool	is_dinner_finished(t_table *table);
 
 // * SYNCHRO UTILS
-// void	wait_all_threads(t_table *table);
-// bool	are_all_threads_running(t_mutex *mutex, long *threads, long n_philos);
-// void	increase_long(t_mutex *mutex, long *value);
+void	wait_all_processes(t_table *table);
+bool	are_all_processes_running(t_sem *sem, long *processes, long n_philos);
+void	increase_long(t_sem *sem, long *value);
 
 // * START
-// void	start_dinner(t_table *table);
-// void	think(t_philo *philo, bool pre_simulation);
-// void	de_synchronize_philos(t_philo *philo);
+void	start_dinner(t_table *table);
+void	think(t_philo *philo, bool pre_simulation);
+void	de_synchronize_philos(t_philo *philo);
 
 // * MONITORING
-// void	*monitor_dinner(void *arg);
+void	*monitor_dinner(void *arg);
 
 #endif // PHILO_BONUS_H

@@ -15,9 +15,9 @@ static void	init_philo(t_table *table)
 		table->philos[i].is_full = false;
 		table->philos[i].n_eat = 0;
 		table->philos[i].last_meal_time = 0;
-		table->philos[i].pid = fork();
-		safe_process_handler(table->philos[i].pid, FORK);
-		table->philos[i].philo_sem = safe_sem_open(PHILO_SEM_NAME, O_CREAT, O_RDONLY | O_WRONLY, 1);
+		safe_process_handler(&table->philos[i].pid, FORK);
+		table->philos[i].philo_sem = safe_sem_open(PHILO_SEM_NAME, O_CREAT,
+			O_RDONLY | O_WRONLY, 1);
 	}
 }
 
@@ -26,9 +26,6 @@ static void	init_philo(t_table *table)
  */
 void	init_table(t_table *table)
 {
-	int	i;
-
-	i = -1;
 	table->end_dinner = false;
 	table->all_processes_ready = false;
 	table->n_processes_running = 0;

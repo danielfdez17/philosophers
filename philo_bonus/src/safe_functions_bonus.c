@@ -16,10 +16,11 @@ void	*safe_malloc(size_t bytes)
 /**
  * Handles mutex operations safely, exiting on failure.
  */
-void	safe_process_handler(pid_t pid, t_opcode opcode)
+void	safe_process_handler(pid_t *pid, t_opcode opcode)
 {
+	*pid = fork();
 	if (opcode == FORK)
-		process_error_handler(pid, opcode);
+		process_error_handler(*pid);
 	else
 		error_exit("Process operation not supported");
 }

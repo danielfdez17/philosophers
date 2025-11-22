@@ -59,7 +59,7 @@ $(NAME): $(OBJS)
 	@echo "Compiling $(NAME)"
 
 # ? Compiles the whole program/library
-all: obj $(NAME)
+bonus: obj $(NAME)
 
 # ? Creates the folder for .o files
 obj:
@@ -76,27 +76,27 @@ fclean: clean
 	@echo "Removing $(NAME)"
 
 # ? Rebuilds the program/library
-re: fclean all
+rebonus: fclean bonus
 	@echo "Rebuilding $(NAME)"
 
 # ! Automating / Debugging rules
 
 # INPUT = 1 310 200 100
 
-# run: all
+# run: bonus
 # 	clear
 # 	./$(NAME) $(INPUT)
 
-# valgrind: all
+# valgrind: bonus
 # 	clear
 # 	valgrind ./$(NAME) $(INPUT)
 
-# debug: all
+# debug: bonus
 # 	clear
 # 	gdb ./$(NAME)
 
 # Protects all rules from files with same name
-.PHONY: all obj clean fclean re run valgrind debug
+.PHONY: bonus obj clean fclean rebonus run valgrind debug
 
 # Indicates the main rule to be executed when only 'make' is called
 .GOAL: all
