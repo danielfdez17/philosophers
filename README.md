@@ -18,3 +18,6 @@ It is necessary to indicate the first four params. On the other hand, the last o
 ```bash
 ./philo number_of_philos time_to_die time_to_eat time_to_sleep [n_eat_per_filo]
 ```
+
+## Important note
+Bonus part is not complete
