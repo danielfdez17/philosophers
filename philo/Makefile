@@ -15,9 +15,8 @@
 NAME = philo
 
 # * Compilation
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-CFLAGS += -fsanitize=address
+MYCC = cc
+MYCCFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=thread
 
 # * Removal
 RM = rm -f
@@ -50,12 +49,12 @@ OBJS = $(addprefix $(OBJ_DIR), $(PHILO_SRCS:.c=.o))
 # ? Links a .c (and .h if needed) to its .o file
 $(OBJ_DIR)%.o: $(PHILO_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(MYCC) $(MYCCFLAGS) $(INCLUDES) -c $< -o $@
 
 # ? main program compilation
 $(NAME): $(OBJS)
 	@clear
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
+	@$(MYCC) $(MYCCFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
 	@echo "Compiling $(NAME)"
 
 # ? Compiles the whole program/library
@@ -83,9 +82,10 @@ re: fclean all
 
 # INPUT = 1 310 200 100
 
-# run: all
-# 	clear
-# 	./$(NAME) $(INPUT)
+run:
+	clear
+	@$(MAKE) re --no-print-directory
+	./$(NAME) 5 400 200 200 4
 
 # valgrind: all
 # 	clear
